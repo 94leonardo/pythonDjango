@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 from django.http import HttpResponse
+from django.db import IntegrityError
 
 # Create your views here. ruta de las vistas
 
@@ -24,13 +26,15 @@ def signup(request):
                 )
 
                 user.save()
+                login(request, user)
                 return redirect("tasks")
-            except:
+
+            except IntegrityError:
 
                 return render(
                     request,
                     "signup.html",
-                    {"form": UserCreationForm, "error": "Username already exists"},
+                    {"form": UserCreationForm, "error": "User already exist"},
                 )
 
         return render(
