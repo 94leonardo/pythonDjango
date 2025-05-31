@@ -17,8 +17,23 @@ def home(request):
 
 
 def task_detail(request, task_id):
-    tasks = get_object_or_404(Task, pk=task_id)
-    return render(request, "task_detail.html", {"task": tasks})
+    if request.method == "GET":
+        tasks = get_object_or_404(Task, pk=task_id, user=request.user)
+        form = TaskForm(instance=tasks)
+        return render(request, "task_detail.html", {"task": tasks, "form": form})
+
+    else:
+        try:
+            tasks = get_object_or_404(Task, pk=task_id, user=request.user)
+            form = TaskForm(request.POST, instance=tasks)
+            form.save()
+            return redirect("tasks")
+        except ValueError:
+            return render(
+                request,
+                "task_detail.html",
+                {"task": tasks, "form": form, "error": "error updating task"},
+            )
 
 
 def signup(request):
