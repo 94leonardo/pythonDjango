@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from .forms import TaskForm
 from .models import Task
+from django.utils import timezone
 
 
 # Create your views here. ruta de las vistas
@@ -36,7 +37,23 @@ def task_detail(request, task_id):
             )
 
 
+def complete_task(request, task_id):
+    tasks = get_object_or_404(Task, pk=task_id, user=request.user)
+    if request.method == "POST":
+        tasks.datecompleted = timezone.now()
+        tasks.save()
+        return redirect("tasks")
+
+
+def delete_task(request, task_id):
+    tasks = get_object_or_404(Task, pk=task_id, user=request.user)
+    if request.method == "POST":
+        tasks.delete()
+        return redirect("tasks")
+
+
 def signup(request):
+
     if request.method == "GET":
         return render(request, "signup.html", {"form": UserCreationForm})
     else:
