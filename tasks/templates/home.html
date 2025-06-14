@@ -1,7 +1,14 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
 
-{% block content %}
-<h1>Home</h1>
-<p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi odio nam beatae sunt harum repellendus iusto, ipsa
-    ipsum, quia enim odit in tenetur sed omnis. Temporibus eveniet voluptatem vel explicabo.</p>
+<main class="container py-5">
+    <section class="card card-body">
+        <h1 class="display-1 text-center">Home</h1>
+        <p>This is the home page</p>
+
+        <div class="text-center">
+            <a class="btn btn-primary" href="{% url 'signin' %}">Signin</a>
+            <a class="btn btn-primary" href="{% url 'signup' %}">Signup</a>
+        </div>
+    </section>
+</main>
 {% endblock content %}
